@@ -1,3 +1,8 @@
 import { createContext } from "react";
 
-export const SearchContext = createContext();
+export type SearchContextType = {
+  search: boolean;
+  setSearch: (search: boolean) => void;
+};
+
+export const SearchContext = createContext<SearchContextType | null>(null);

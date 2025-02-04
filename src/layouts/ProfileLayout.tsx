@@ -82,7 +82,7 @@ export default function ProfileLayout({ type }: { type: "players" | "teams" }) {
               <h3 className="text-light1 xl:text-7xl text-6xl font-anton tracking-wider">
                 {data.name.toUpperCase()}
               </h3>
-              {type == "players" && (
+              {"team_name" in data && (
                 <Link
                   to={`/teams/${data.team_id}`}
                   className="flex items-center gap-2 absolute bottom-0"

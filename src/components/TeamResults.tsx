@@ -14,7 +14,7 @@ export default function TeamResults({ teams }: { teams: any }) {
 }
 
 function TeamSearchResult({ team }: { team: any }) {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useContext(SearchContext)!;
   const url = `/teams/${team.team_id}`;
 
   return (

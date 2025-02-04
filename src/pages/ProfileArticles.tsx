@@ -11,12 +11,12 @@ export default function ProfileArticles() {
     let ignore = false;
 
     async function getArticles() {
-      const url = `https://mlbee-backend-608818802454.asia-south1.run.app/articles/search/tags?name=${data.name}`;
+      const url = `https://mlbee-backend-608818802454.asia-south1.run.app/articles/search/tags?name=${data?.name}`;
       let res = await fetch(url);
-      res = await res.json();
+      const articles_res = await res.json();
 
       if (!ignore) {
-        setArticles(res);
+        setArticles(articles_res);
       }
     }
 

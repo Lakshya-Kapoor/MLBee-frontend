@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { SearchContext } from "../contexts/SearchContext";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function NavBar() {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useContext(SearchContext)!;
   const { loading, userToken, logout } = useContext(AuthContext)!;
 
   return (

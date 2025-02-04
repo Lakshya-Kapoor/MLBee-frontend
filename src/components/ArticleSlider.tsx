@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { SearchContext } from "../contexts/SearchContext";
 import { ArticleData } from "../utils/types";
 
-export default function ArticleSlider({ articles }) {
+export default function ArticleSlider({
+  articles,
+}: {
+  articles: ArticleData[];
+}) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -73,7 +77,7 @@ export default function ArticleSlider({ articles }) {
 }
 
 export function ArticleCard({ article }: { article: ArticleData }) {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useContext(SearchContext)!;
 
   const formattedDate = new Date(article.uploadDate).toLocaleDateString(
     "en-US",

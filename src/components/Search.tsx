@@ -3,6 +3,7 @@ import SearchInput from "./SearchInput";
 import TeamResults from "./TeamResults";
 import PlayerResults from "./PlayerResults";
 import ArticleSlider from "./ArticleSlider";
+import { ArticleData } from "../utils/types";
 
 export default function Search() {
   const [text, setText] = useState("");
@@ -61,7 +62,7 @@ export default function Search() {
   );
 }
 
-function ArticleResults({ articles }) {
+function ArticleResults({ articles }: { articles: ArticleData[] }) {
   return (
     <div className="col-span-2">
       <h3 className="text-2xl text-light5 font-semibold mb-5">Articles</h3>

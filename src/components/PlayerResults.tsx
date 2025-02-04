@@ -14,7 +14,7 @@ export default function PlayerResults({ players }: { players: any }) {
 }
 
 function PlayerSearchResult({ player }: { player: any }) {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useContext(SearchContext)!;
   const url = `/players/${player.player_id}`;
 
   return (
