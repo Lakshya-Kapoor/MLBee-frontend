@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthLayout from "./layouts/AuthLayout";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NavLayout from "./layouts/NavLayout";
+import { Stats } from "./pages/Stats";
+import { Roster } from "./pages/Roster";
+import ProfileLayout from "./layouts/ProfileLayout";
+import ProfileHome from "./pages/ProfileHome";
+import ProfileArticles from "./pages/ProfileArticles";
+import ProfileSchedule from "./pages/ProfileSchedule";
+import AuthProvider from "./contexts/AuthProvider";
+import Standings from "./pages/Standings";
+import Teams from "./pages/Teams";
+import ArticlePage from "./pages/ArticlePage";
+import Articles from "./pages/Articles";
+import Home from "./pages/Home";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/auth/" element={<AuthLayout />}>
+            <Route path="signup" element={<Signup />} />
+            <Route path="login" element={<Login />} />
+          </Route>
+          <Route path="/" element={<NavLayout />}>
+            <Route index element={<Home />} />
+            <Route path="articles/:id/" element={<ArticlePage />} />
+            <Route path="standings" element={<Standings />} />
+            <Route path="teams" element={<Teams />} />
+            <Route path="articles" element={<Articles />} />
+            <Route path="teams/:id/" element={<ProfileLayout type="teams" />}>
+              <Route index element={<ProfileHome />} />
+              <Route path="roster" element={<Roster />} />
+              <Route path="stats" element={<Stats />} />
+              <Route path="schedule" element={<ProfileSchedule />} />
+              <Route path="articles" element={<ProfileArticles />} />
+            </Route>
+            <Route
+              path="players/:id"
+              element={<ProfileLayout type="players" />}
+            >
+              <Route index element={<ProfileHome />} />
+              <Route path="stats" element={<Stats />} />
+              <Route path="articles" element={<ProfileArticles />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
-
-export default App
