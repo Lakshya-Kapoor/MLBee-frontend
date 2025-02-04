@@ -3,14 +3,16 @@ FROM node:18 AS build
 # Set working directory
 WORKDIR /app
 
-# Copy dependencies
+# Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy the source files
+# Copy the rest of the application files
 COPY . .
 
-# Build Vite project
+# Build the Vite app
 RUN npm run build
 
 # Use nginx to serve the built files
@@ -26,6 +28,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
