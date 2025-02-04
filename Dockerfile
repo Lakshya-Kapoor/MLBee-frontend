@@ -1,21 +1,34 @@
-# 1. Build Stage (using Node.js to build the React app)
-FROM node:18-alpine AS build  # Use a Node.js base image (Alpine for smaller size)
+FROM node:18 AS build
 
-WORKDIR /app                  # Set the working directory inside the container
+# Set working directory
+WORKDIR /app
 
-COPY package*.json ./         # Copy package files for dependency installation
-RUN npm install || yarn install # Install dependencies (npm or yarn)
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-COPY . .                     # Copy all project files
-RUN npm run build || yarn build   # Build the React app (creates the 'dist' folder)
+# Install dependencies
+RUN npm install
 
+# Copy the rest of the application files
+COPY . .
 
-# 2. Serve Stage (using Nginx to serve the static files)
-FROM nginx:alpine             # Use a lightweight Nginx image
+# Build the Vite app
+RUN npm run build
 
-COPY --from=build /app/dist /usr/share/nginx/html  # Copy the built files from the build stage
-                                                  # to Nginx's HTML directory
+# Use nginx to serve the built files
+FROM nginx:alpine
 
-EXPOSE 80                    # Expose port 80 (default for Nginx)
+# Remove default nginx static content
+RUN rm -rf /usr/share/nginx/html/*
 
-CMD ["nginx", "-g", "daemon off;"] # Start Nginx (important: daemon off prevents issues)
+# Copy built files from previous stage
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
