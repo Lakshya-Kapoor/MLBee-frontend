@@ -29,11 +29,8 @@ export default function ArticleSlider({
   const scroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return;
     const container = scrollContainerRef.current;
-    const cardWidth = 400; // Width of the card
-    const gap = 16; // Gap between cards (4 * 4px from gap-4)
-    const containerWidth = container.clientWidth;
-    const visibleCards = Math.floor(containerWidth / (cardWidth + gap));
-    const scrollAmount = (cardWidth + gap) * visibleCards;
+    const containerWidth = scrollContainerRef.current.clientWidth;
+    const scrollAmount = containerWidth; // Scroll by the container's width
 
     container.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
