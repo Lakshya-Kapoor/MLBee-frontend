@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { RankingsType, StandingsData } from "../utils/types";
 
 export default function Standings() {
-  const [data, setData] = useState<RankingsType | null>(null);
+  const [data, setData] = useState<RankingsType | "loading" | null>(null);
   const [selectedSeason, setSelectedSeason] = useState("2024");
   const [selectedDivision, setSelectedDivision] = useState("AL");
 
@@ -29,6 +29,9 @@ export default function Standings() {
   }, [selectedSeason]);
 
   const StandingsData = (division: string) => {
+    if (data === "loading") {
+      return null;
+    }
     return {
       "AL East": data!.AL_East,
       "AL Central": data!.AL_Central,
@@ -57,7 +60,7 @@ export default function Standings() {
           <SeasonSelector
             selectedSeason={selectedSeason}
             onSeasonChange={(season: string) => {
-              setData(null);
+              setData("loading");
               setSelectedSeason(season);
             }}
           />
@@ -68,12 +71,16 @@ export default function Standings() {
         />
       </div>
 
-      <div className="animate-fadeIn">
-        <StandingsTable
-          title={selectedDivision}
-          teams={StandingsData(selectedDivision)!}
-        />
-      </div>
+      {data === "loading" ? (
+        <div className="text-light1">Loading...</div>
+      ) : (
+        <div className="animate-fadeIn">
+          <StandingsTable
+            title={selectedDivision}
+            teams={StandingsData(selectedDivision)!}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -240,11 +247,6 @@ const TeamRow = ({
         <span className={`text-2xl font-bold text-gray-500`}>
           {team[rankType === 1 ? "leagueRank" : "divisionRank"]}
         </span>
-        {/* {team.clinched && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-700 text-blue-200">
-              Clinched
-            </span>
-          )} */}
       </TableData>
       <TableData>
         <Link to={`/teams/${team.teamId}`} className="flex gap-2">

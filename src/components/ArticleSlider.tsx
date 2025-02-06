@@ -77,7 +77,7 @@ export default function ArticleSlider({
 }
 
 export function ArticleCard({ article }: { article: ArticleData }) {
-  const { search, setSearch } = useContext(SearchContext)!;
+  const { setSearch } = useContext(SearchContext)!;
 
   const formattedDate = new Date(article.uploadDate).toLocaleDateString(
     "en-US",
@@ -91,7 +91,7 @@ export function ArticleCard({ article }: { article: ArticleData }) {
   return (
     <Link
       to={`/articles/${article._id}`}
-      onClick={() => setSearch(!search)}
+      onClick={() => setSearch(false)}
       className="border border-light5/30 rounded-lg p-5 h-[250px] w-[385px] bg-gradient-to-br from-dark1/65 to-dark1/0 hover:bg-dark1/40 transition-all duration-200 flex flex-col justify-between"
     >
       <div className="flex flex-col justify-around flex-grow ">
